@@ -507,8 +507,7 @@ if(sessionStorage.getItem('jarvis_auth')==='1'){ render(); }
 <script>
 /* Proteccion de acceso: bloquea el render hasta validar usuario+contrasena */
 (function(){
-  var USER="bibi";
-  var HASH="8928bc891f778547b44ca32612996c50c015d6a0378ec48db628892cc322da19";
+  var USERS={ "bibi":"8928bc891f778547b44ca32612996c50c015d6a0378ec48db628892cc322da19", "jeanmichel":"07accb2b5cdca4815a546512541a5636f80d12f3e7a201b6824f498770bc2029" };
   // css para la pantalla de login
   var st=document.createElement('style');
   st.textContent='#loginGate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#0e1116;font-family:system-ui,sans-serif}.lg-card{background:#fff;border-radius:16px;padding:28px;width:min(360px,90vw);box-shadow:0 20px 60px rgba(0,0,0,.5)}.lg-card h1{font-size:18px;margin:0 0 4px}.lg-card p{color:#6e6e73;font-size:13px;margin:0 0 18px}.lg-card label{display:block;font-size:12px;font-weight:700;margin:10px 0 4px;color:#1d1d1f}.lg-card input{width:100%;padding:10px 12px;border:1px solid #c7c7cc;border-radius:10px;font:14px system-ui;color:#1d1d1f}.lg-card input:focus{outline:2px solid #0071e3;border-color:#0071e3}.lg-card button{width:100%;margin-top:16px;padding:11px;border:0;border-radius:10px;background:#0071e3;color:#fff;font:700 14px system-ui;cursor:pointer}.lg-card .err{color:#b4232e;font-size:12px;margin-top:8px;min-height:16px}.lg-card .foot{margin-top:14px;font-size:11.5px;color:#6e6e73;text-align:center}';
@@ -523,9 +522,9 @@ if(sessionStorage.getItem('jarvis_auth')==='1'){ render(); }
     var payload=u+':'+p;
     crypto.subtle.digest('SHA-256', new TextEncoder().encode(payload)).then(function(buf){
       var arr=Array.from(new Uint8Array(buf));var hex=arr.map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-      if(u===USER && hex===HASH){
-        sessionStorage.setItem('jarvis_auth','1');
-        gate.remove(); unlock();
+      if(USERS.hasOwnProperty(u) && hex===USERS[u]){
+              sessionStorage.setItem('jarvis_auth','1');
+              gate.remove(); unlock();
       }else{
         document.getElementById('_lg_e').textContent='Usuario o contrasena incorrectos.';
         document.getElementById('_lg_p').value='';
