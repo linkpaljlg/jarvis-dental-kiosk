@@ -535,8 +535,7 @@ if(sessionStorage.getItem('jarvis_auth')==='1'){ render(); }
   document.getElementById('_lg_b').addEventListener('click',tryLogin);
   ['_lg_u','_lg_p'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')tryLogin();});});
   document.getElementById('_lg_p').focus();
-  window.__unlock=null;
-  function unlock(){ if(window.__unlock) window.__unlock(); }
+  function unlock(){ if(typeof window.render==='function') window.render(); }
   window.__loginReady=unlock;
 })();
 </script>
